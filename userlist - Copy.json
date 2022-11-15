@@ -1,0 +1,19 @@
+{
+	"userlist": [
+		{
+			"name": "Hayden",
+			"role": "Student",
+			"identifier": 123,
+			"checked_in": 0
+		},
+		{
+			"name": "Yayha",
+			"role": "Student",
+			"identifier": 456,
+			"checked_in": 1
+		}
+	
+	
+	
+	]
+}
