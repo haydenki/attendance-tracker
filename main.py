@@ -1,11 +1,9 @@
-# Python program to read
-# json file
-  
-  
 import json
+import threading
+import time
   
 # Load userlist from disk 
-f = open('C:\xampp\htdocs\userlist.json')
+f = open(r"C:\xampp\htdocs\userlist.json")
 data = json.load(f)
 
 # Checks if user is present in DB
@@ -21,14 +19,29 @@ def checkIn(id):
         if(student["identifier"] == int(barcode)):
             if(student["checked_in"] == 0):
                 student["checked_in"] = 1
+                student["time_in"] = 0
             else:
                 student["checked_in"] = 0
 
 
 # Saves JSON dict stored in memory to disk
 def save():
-    savefile = open('userlist.json', 'w')
+    savefile = open(r"C:\xampp\htdocs\userlist.json", 'w')
     json.dump(data, savefile)
+    
+# Increments the 'time_in' parameter for each user who has
+# 'checked_in' set to 1. Used for tracking how long a user has
+# been checked in.
+def incrementTime():
+    while True:
+        for student in data["userlist"]:
+            if(student["checked_in"] == 1):
+                student["time_in"] = student["time_in"] + 1
+        time.sleep(1)
+        save()
+
+clockThread = threading.Thread(target=incrementTime, args=())
+clockThread.start()
 
 # Input loop
 while True:
