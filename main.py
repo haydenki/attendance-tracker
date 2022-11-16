@@ -1,6 +1,7 @@
 import json
 import threading
 import time
+import datetime
   
 # Load userlist from disk 
 f = open(r"C:\xampp\htdocs\userlist.json")
@@ -20,8 +21,16 @@ def checkIn(id):
             if(student["checked_in"] == 0):
                 student["checked_in"] = 1
                 student["time_in"] = int(time.time())
+                # Append signin to log file
+                logfile = open(r"C:\xampp\htdocs\logs.txt", "a")
+                appstring = str("[" + datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') + "] " + student["name"] + " signed in.\n")
+                logfile.write(appstring)
             else:
                 student["checked_in"] = 0
+                # Append signout to log file
+                logfile = open(r"C:\xampp\htdocs\logs.txt", "a")
+                appstring = str("[" + datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') + "] " + student["name"] + " signed out.\n")
+                logfile.write(appstring)
 
 
 # Saves JSON dict stored in memory to disk

@@ -8,7 +8,7 @@ $json_data = json_decode($json,true);
 // Display checked in list
 echo "<h1>Checked in:</h1><ul>";
 
-for($x = 0; $x < 2; $x++)
+for($x = 0; $x < sizeof($json_data["userlist"]); $x++)
 {
 	if($json_data["userlist"][$x]["checked_in"] == 1)
 	{
@@ -22,7 +22,7 @@ echo "</ul><br>";
 // Display checked out list
 echo "<h1>Checked out:</h1><ul>";
 
-for($x = 0; $x < 2; $x++)
+for($x = 0; $x < sizeof($json_data["userlist"]); $x++)
 {
 	if($json_data["userlist"][$x]["checked_in"] == 0)
 	{

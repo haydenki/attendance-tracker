@@ -80,7 +80,7 @@ function openCity(evt, cityName) {
 </script>
 
 <script>
-function refresh() {
+function refreshOverview() {
 const Http = new XMLHttpRequest();
 const url="getoverview.php";
 Http.open('GET', url);
@@ -93,9 +93,22 @@ Http.onreadystatechange = (e) => {
   }
 }}
 
-setInterval(refresh, 1000);
+setInterval(refreshOverview, 1000);
 
+function refreshHistory() {
+const Http = new XMLHttpRequest();
+const url="gethistory.php";
+Http.open('GET', url);
+Http.send();
 
+Http.onreadystatechange = (e) => {
+  if (document.body.innerHTML != Http.responseText && Http.responseText != '')
+  {
+  document.getElementById("History").innerHTML = Http.responseText
+  }
+}}
+
+setInterval(refreshHistory, 50);
 </script>
 
 
