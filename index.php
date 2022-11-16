@@ -93,7 +93,7 @@ Http.onreadystatechange = (e) => {
   }
 }}
 
-setInterval(refresh, 50);
+setInterval(refresh, 1000);
 
 
 </script>

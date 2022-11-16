@@ -19,7 +19,7 @@ def checkIn(id):
         if(student["identifier"] == int(barcode)):
             if(student["checked_in"] == 0):
                 student["checked_in"] = 1
-                student["time_in"] = 0
+                student["time_in"] = int(time.time())
             else:
                 student["checked_in"] = 0
 
@@ -39,9 +39,6 @@ def incrementTime():
                 student["time_in"] = student["time_in"] + 1
         time.sleep(1)
         save()
-
-clockThread = threading.Thread(target=incrementTime, args=())
-clockThread.start()
 
 # Input loop
 while True:

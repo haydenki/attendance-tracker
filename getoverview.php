@@ -1,24 +1,4 @@
-<script>
-function refresh() {
-const Http = new XMLHttpRequest();
-const url=document.location;
-Http.open('GET', url);
-Http.send();
-
-Http.onreadystatechange = (e) => {
-  if (document.body.innerHTML != Http.responseText && Http.responseText != '')
-  {
-  document.body.innerHTML = Http.responseText
-  }
-}}
-
-setInterval(refresh, 50);
-
-
-</script>
-
 <?php
-  
 // Read the JSON file 
 $json = file_get_contents('userlist.json');
   
@@ -32,7 +12,7 @@ for($x = 0; $x < 2; $x++)
 {
 	if($json_data["userlist"][$x]["checked_in"] == 1)
 	{
-		print_r("<li>".$json_data["userlist"][$x]["name"]." - ".$json_data["userlist"][$x]["time_in"]." seconds ago");
+		print_r("<li>".$json_data["userlist"][$x]["name"]." - ".(time() - $json_data["userlist"][$x]["time_in"])." seconds ago");
 
 	}
 }
