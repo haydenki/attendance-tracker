@@ -22,13 +22,15 @@ def checkIn(id):
                 student["checked_in"] = 1
                 student["time_in"] = int(time.time())
                 # Append signin to log file
-                logfile = open(r"C:\xampp\htdocs\logs.txt", "a")
+                logfilename = datetime.datetime.now().strftime("%Y-%m-%d") + ".txt"
+                logfile = open(logfilename, "a+")
                 appstring = str("[" + datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') + "] " + student["name"] + " signed in.\n")
                 logfile.write(appstring)
             else:
                 student["checked_in"] = 0
                 # Append signout to log file
-                logfile = open(r"C:\xampp\htdocs\logs.txt", "a")
+                logfilename = datetime.datetime.now().strftime("%Y-%m-%d") + ".txt"
+                logfile = open(logfilename, "a+")
                 appstring = str("[" + datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') + "] " + student["name"] + " signed out.\n")
                 logfile.write(appstring)
 
@@ -37,17 +39,6 @@ def checkIn(id):
 def save():
     savefile = open(r"C:\xampp\htdocs\userlist.json", 'w')
     json.dump(data, savefile)
-    
-# Increments the 'time_in' parameter for each user who has
-# 'checked_in' set to 1. Used for tracking how long a user has
-# been checked in.
-def incrementTime():
-    while True:
-        for student in data["userlist"]:
-            if(student["checked_in"] == 1):
-                student["time_in"] = student["time_in"] + 1
-        time.sleep(1)
-        save()
 
 # Input loop
 while True:
