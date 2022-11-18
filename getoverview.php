@@ -1,4 +1,6 @@
 <?php
+require_once 'requiresession.inc.php';
+
 // Read the JSON file 
 $json = file_get_contents('userlist.json');
   

@@ -1,4 +1,5 @@
 <?php
+require_once 'requiresession.inc.php';
 
 if(empty($_GET["date"]))
 {

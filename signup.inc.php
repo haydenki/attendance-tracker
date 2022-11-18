@@ -1,8 +1,9 @@
 <?php
+require_once 'requireadmin.inc.php';
 
 if (!isset($_POST["submit"]))
 {
-	header("location: login.php");
+	header("location: index.php");
 	exit();
 }
 
@@ -10,38 +11,45 @@ $username = $_POST["username"];
 $email = $_POST["email"];
 $password = $_POST["password"];
 $password_repeat = $_POST["passwordrepeat"];
+$role = $_POST["role"];
 
 require_once 'dbh.inc.php';
 require_once 'functions.inc.php';
 
 if(empty_input_signup($username, $email, $password, $password_repeat) !== false)
 {
-	header("location: login.php?error=emptyinput");
+	header("location: index.php?error=emptyinput");
 	exit();
 }
 
 if(invalid_username($username) !== false)
 {
-	header("location: login.php?error=username");
+	header("location: index.php?error=username");
 	exit();
 }
 
 if(invalid_email($email) !== false)
 {
-	header("location: login.php?error=email");
+	header("location: index.php?error=email");
 	exit();
+}
+
+if(invalid_role($role) !== false)
+{
+	header("location: index.php?error=invalidrole");
+	exit();	
 }
 
 if(password_match($password, $password_repeat) !== false)
 {
-	header("location: login.php?error=pwdmatch");
+	header("location: index.php?error=pwdmatch");
 	exit();
 }
 
 if(username_exists($conn, $username, $email) !== false)
 {
-	header("location: login.php?error=usernametaken");
+	header("location: index.php?error=usernametaken");
 	exit();
 }
 
-create_user($conn, $username, $email, $password);
+create_user($conn, $username, $email, $password, $role);

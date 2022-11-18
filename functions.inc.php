@@ -42,6 +42,22 @@ function invalid_email($email)
 	return $result;
 }
 
+function invalid_role($role)
+{
+	$result;
+	$valid_roles = array("staff","admin");
+	
+	if(!in_array($role, $valid_roles))
+	{
+		$result = true;
+	}
+	else
+	{
+		$result = false;
+	}
+	return $result;
+}
+
 function password_match($password, $password_repeat)
 {
 	$result;
@@ -85,9 +101,9 @@ function username_exists($conn, $username, $email)
 	mysqli_stmt_close($statement);
 }
 
-function create_user($conn, $username, $email, $password)
+function create_user($conn, $username, $email, $password, $role)
 {
-	$sql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?);";
+	$sql = "INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?);";
 	$statement = mysqli_stmt_init($conn);
 	
 	if(!mysqli_stmt_prepare($statement, $sql))
@@ -98,9 +114,59 @@ function create_user($conn, $username, $email, $password)
 	
 	$hashed_password = password_hash($password, PASSWORD_DEFAULT);
 	
-	mysqli_stmt_bind_param($statement, "sss", $username, $email, $hashed_password);
+	mysqli_stmt_bind_param($statement, "ssss", $username, $email, $hashed_password, $role);
 	mysqli_stmt_execute($statement);
 	mysqli_stmt_close($statement);
-	header("location: index.php");
+	header("location: index.php?error=none");
 	exit();
 }
+
+function empty_input_login($username, $password)
+{
+	$result;
+	if(empty($username) || empty($password))
+	{
+		$result = true;
+	}
+	else
+	{
+		$result = false;
+	}
+	return $result;
+}
+
+function login_user($conn, $username, $password)
+{
+	$username_exists = username_exists($conn, $username, $username);
+	
+	if($username_exists === false)
+	{
+		header("location: login.php?error=wronglogin");
+		exit();
+	}
+	
+	$password_hashed = $username_exists["password"];
+	$check_password = password_verify($password, $password_hashed);;
+	
+	if($check_password === false)
+	{
+		header("location: login.php?error=wronglogin");
+		exit();		
+	}
+	else if($check_password === true)
+	{
+		session_start();
+		$_SESSION["uid"] = $username_exists["uid"];
+		$_SESSION["username"] = $username_exists["username"];
+		$_SESSION["role"] = $username_exists["role"];
+		header("location: index.php");
+		exit();	
+	}
+}
+
+
+
+
+
+
+
