@@ -11,7 +11,7 @@ $json_data = json_decode($json,true);
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="panel.css"
+<link rel="stylesheet" href="panel.css">
 </head>
 <body>
 
@@ -21,6 +21,7 @@ $json_data = json_decode($json,true);
 <div class="tab">
   <button class="tablinks" onclick="openCity(event, 'Overview')">Overview</button>
   <button class="tablinks" onclick="openCity(event, 'History')">History</button>
+  <button class="tablinks" onclick="openCity(event, 'Add User')">Add User</button>
   <button class="tablinks" onclick="openCity(event, 'Logout')">Logout</button>
 </div>
 
@@ -55,7 +56,25 @@ $json_data = json_decode($json,true);
 </div>
 
 <div id="History" class="tabcontent">
-  <p>History view is not available yet.</p> 
+	Viewing history for:
+	<input id="historyDate" type="date"></input> 
+	<hr>
+	<div id="history"></div>
+</div>
+
+<div id="Add User" class="tabcontent">
+	<h2>Add new user</h2>
+	<form action="signup.inc.php" method="post">
+	<input type="text" name="username" placeholder="Username..."><br><br>
+	<input type="text" name="email" placeholder="E-mail..."><br><br>
+	<input type="password" name="password" placeholder="Password..."><br><br>
+	<input type="password" name="passwordrepeat" placeholder="Repeat Password..."><br><br>
+	Role: <select name="role">
+		<option value="staff">Staff</option>
+		<option value="admin">Admin</option>
+	</select><br><br>
+	<button type="submit" name="submit">Add User</button>
+	</form>
 </div>
 
 <div id="Logout" class="tabcontent">
@@ -97,14 +116,14 @@ setInterval(refreshOverview, 1000);
 
 function refreshHistory() {
 const Http = new XMLHttpRequest();
-const url="gethistory.php";
+const url="gethistory.php?date=" + document.getElementById("historyDate").value;
 Http.open('GET', url);
 Http.send();
 
 Http.onreadystatechange = (e) => {
   if (document.body.innerHTML != Http.responseText && Http.responseText != '')
   {
-  document.getElementById("History").innerHTML = Http.responseText
+  document.getElementById("history").innerHTML = Http.responseText
   }
 }}
 
