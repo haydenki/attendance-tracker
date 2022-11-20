@@ -5,3 +5,5 @@ CREATE TABLE users (
 	password varchar(128) NOT NULL,
 	role varchar(128) NOT NULL
 );
+
+INSERT INTO users (username, email, password, role) VALUES ("admin", "admin@example.com", "$2a$12$GIoJFq4M59V7tbIc2CZ/K.gtFFZDv/QXRYGdrcEsCFgcQ9UyzCib2","admin");

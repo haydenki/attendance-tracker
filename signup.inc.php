@@ -13,8 +13,16 @@ $password = $_POST["password"];
 $password_repeat = $_POST["passwordrepeat"];
 $role = $_POST["role"];
 
+//validate CSRF token 
+$csrf_token = hash_hmac('sha256', $_SESSION['username'], $_SESSION['key']);
+if (!hash_equals($csrf_token, $_POST['csrf']))
+{
+	die('CSRF token failed.');
+}
+
 require_once 'dbh.inc.php';
 require_once 'functions.inc.php';
+
 
 if(empty_input_signup($username, $email, $password, $password_repeat) !== false)
 {

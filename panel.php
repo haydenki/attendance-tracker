@@ -1,6 +1,14 @@
 <?php
 require_once 'requiresession.inc.php'; 
  
+// CSRF protection
+if(empty($_SESSION['key']))
+{
+	$_SESSION['key'] = bin2hex(random_bytes(32));
+}
+
+$csrf_token = hash_hmac('sha256', $_SESSION['username'], $_SESSION['key']);
+
 // Load user DB
 $json = file_get_contents('userlist.json');
   
@@ -28,7 +36,7 @@ $json_data = json_decode($json,true);
 	echo "<button class='tablinks' onclick='openCity(event, \"Add User\")'>Add User</button>";
   }
   ?>
-  <a href="logout.inc.php"><button class="tablinks" onclick="">Logout</button></a>
+  <a onclick="if(confirm('Are you sure you want to log out?')){window.location='logout.inc.php'}"><button class="tablinks">Logout</button></a>
 </div>
 
 <div id="Overview" class="tabcontent">
@@ -79,6 +87,7 @@ $json_data = json_decode($json,true);
 		<option value="staff">Staff</option>
 		<option value="admin">Admin</option>
 	</select><br><br>
+	<input type="hidden" name="csrf" value="<?php echo $csrf_token;?>">
 	<button type="submit" name="submit">Add User</button>
 	</form>
 	
@@ -125,6 +134,10 @@ $json_data = json_decode($json,true);
   <h3>Logout</h3>
   <p></p>
 </div>
+
+<script>
+document.getElementById("historyDate").valueAsDate = new Date()
+</script>
 
 <script>
 function openCity(evt, cityName) {
