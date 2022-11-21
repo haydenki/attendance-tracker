@@ -38,9 +38,9 @@ for($x = 0; $x < sizeof($json_data["userlist"]); $x++)
 	if($json_data["userlist"][$x]["checked_in"] == 1)
 	{
 		print_r("<tr>");
-		print_r("<td><img width='64px' height='64px' src='https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg'></td>");
-		//print_r("<td><img src='img/students/".$json_data["userlist"][$x]["identifier"].".png'></td>");
-		print_r("<td><b>".$json_data["userlist"][$x]["name"]."</b> - ".pretty_time((time() - $json_data["userlist"][$x]["time_in"]))." - <a href='#'>Sign out</a>");
+		//print_r("<td><img width='64px' height='64px' src='https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg'></td>");
+		print_r("<td><img width='64px' height='72px' src='img/students/".$json_data["userlist"][$x]["identifier"].".jpeg'></td>");
+		print_r("<td><b>".$json_data["userlist"][$x]["name"]."</b> - ".pretty_time((time() - $json_data["userlist"][$x]["time_in"]))." - <a href='signout.php?id=".$json_data["userlist"][$x]["identifier"]."'>Sign out</a>");
 		//print_r("<td><a href='#'>Sign out</a></td>");
 		print_r("</tr>");
 	}
@@ -55,7 +55,7 @@ for($x = 0; $x < sizeof($json_data["userlist"]); $x++)
 {
 	if($json_data["userlist"][$x]["checked_in"] == 0)
 	{
-		print_r("<li>".$json_data["userlist"][$x]["name"]."</li>");
+		print_r("<li>".$json_data["userlist"][$x]["name"]." - <a href='signin.php?id=".$json_data["userlist"][$x]["identifier"]."'>Sign in</a></li>");
 	}
 }
 

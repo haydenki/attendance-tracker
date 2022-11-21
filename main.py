@@ -2,6 +2,7 @@ import json
 import threading
 import time
 import datetime
+import requests
   
 # Load userlist from disk 
 f = open(r"C:\xampp\htdocs\userlist.json")
@@ -16,23 +17,9 @@ def userExists(id):
 
 # Runs everytime student scans their barcode
 def checkIn(id):
-    for student in data["userlist"]:
-        if(student["identifier"] == int(barcode)):
-            if(student["checked_in"] == 0):
-                student["checked_in"] = 1
-                student["time_in"] = int(time.time())
-                # Append signin to log file
-                logfilename = datetime.datetime.now().strftime("%Y-%m-%d") + ".txt"
-                logfile = open(logfilename, "a+")
-                appstring = str("[" + datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') + "] " + student["name"] + " signed in.\n")
-                logfile.write(appstring)
-            else:
-                student["checked_in"] = 0
-                # Append signout to log file
-                logfilename = datetime.datetime.now().strftime("%Y-%m-%d") + ".txt"
-                logfile = open(logfilename, "a+")
-                appstring = str("[" + datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') + "] " + student["name"] + " signed out.\n")
-                logfile.write(appstring)
+    URL = "http://localhost/studentsignin.php"
+    r = requests.post(URL, data={"uid":id})
+    print(r.text)
 
 
 # Saves JSON dict stored in memory to disk
@@ -43,5 +30,4 @@ def save():
 # Input loop
 while True:
     barcode = input(">")
-    checkIn(id)
-    save()
+    checkIn(barcode)
