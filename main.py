@@ -17,8 +17,11 @@ def userExists(id):
 
 # Runs everytime student scans their barcode
 def checkIn(id):
+    # Load master key
+    master_key_file = open("MASTERKEY","r")
+    master_key = master_key_file.read().replace("\n","")
     URL = "http://localhost/studentsignin.php"
-    r = requests.post(URL, data={"uid":id})
+    r = requests.post(URL, data={"uid":id, "key":master_key})
     print(r.text)
 
 

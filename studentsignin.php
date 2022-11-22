@@ -1,5 +1,14 @@
 <?php 
 
+// Master key check
+$master_key = preg_replace('/\n/','my', file_get_contents("MASTERKEY"));
+if($_POST['key'] != $master_key)
+{
+	echo($_POST['key']."\n\n".$master_key);
+	die();
+}
+
+
 // Read the JSON file 
 $json = file_get_contents('userlist.json');
   
