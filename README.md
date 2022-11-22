@@ -34,3 +34,6 @@ into the 'htdocs' folder inside your XAMPP installation directory
 
 2.Add student searching
 
+3. Add password recovery system
+
+4. Add queueing system
